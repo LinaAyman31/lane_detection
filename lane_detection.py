@@ -368,7 +368,7 @@ def fitlines(warped, nwindows=15, margin=100, minpix = 50 ):
     return left_fit, right_fit,out_img, lefty, leftx, righty, rightx, ploty
      
 
-def lane_curvatures(img,lefty, leftx, righty, rightx, ploty):
+def lane_curvatures(img, lefty, leftx, righty, rightx, ploty):
     '''
     Function Calculates the vehicle position , left lane curvature radius and right lane curvature radius.
     
@@ -432,7 +432,6 @@ def draw_lane(img, warped, left_fit, right_fit, ploty, center, left_curverad, ri
         M_inv: inv matrix
         
     Returns:
-       
         out_img: The output image of sliding window detecting the lanes.
         lefty: white pixels on left lane on x-axis.
         leftx: white pixels on left lane on y-axis.
@@ -529,7 +528,7 @@ def software_pipeline_v1(img):
     left_fit, right_fit,out_img, lefty, leftx, righty, rightx, ploty = fitlines(binary_warped,15)    
     
     # Calulating the left and right lines curvatures
-    center,left_curverad, right_curverad = lane_curvatures(lefty, leftx, righty, rightx, ploty)
+    center,left_curverad, right_curverad = lane_curvatures(img, lefty, leftx, righty, rightx, ploty)
     
     # Draw Lane between road lines
     processed_img,color_warp = draw_lane(img, binary_warped, left_fit, right_fit, ploty, center,left_curverad, right_curverad, M_inv)
@@ -561,7 +560,7 @@ def software_pipeline_v2(img):
     left_fit, right_fit,out_img, lefty, leftx, righty, rightx, ploty = fitlines(binary_warped,15)    
     
     # Calulating the left and right lines curvatures
-    center,left_curverad, right_curverad = lane_curvatures(lefty, leftx, righty, rightx, ploty)
+    center,left_curverad, right_curverad = lane_curvatures(img, lefty, leftx, righty, rightx, ploty)
     
     # Draw Lane between road lines
     processed_lane,color_warp = draw_lane(img, binary_warped, left_fit, right_fit, ploty, center,left_curverad, right_curverad, M_inv)
