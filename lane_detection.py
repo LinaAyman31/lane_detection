@@ -81,10 +81,6 @@ def combine_thresh(img, s_thresh=(100, 255), l_thresh=(120, 255)):
         color_combined: The output image after applying combined threshold.
     '''
     
-    # Undistort
-    # undist = cv2.undistort(img, cameraMatrix, distortionCoeffs, None, cameraMatrix)
-    
-    
     # Convert to grayscale
     gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
     height, width = gray.shape
@@ -115,22 +111,7 @@ def combine_thresh(img, s_thresh=(100, 255), l_thresh=(120, 255)):
     # combine all the thresholds
     # A pixel should either be a yellowish or whiteish
     color_combined[(r_g_condition & l_condition) & (s_condition | combined)] = 1
-    
-#     mask2 = np.ones_like(color_combined)
-    
-#     # region_to_be_eleminated = np.array([ [img.shape[1] / 2 - (img.shape[1] / 10)*1.2, height - 1], 
-#     #                                    [img.shape[1] / 2 + img.shape[1] / 12.5 , img.shape[0] - (img.shape[0] / 5)*1.5], 
-#     #                                    [img.shape[1] / 2 + (img.shape[1] / 10)*2.3, height - 1] ], dtype=np.int32)
-    
-#     region_to_be_eleminated = np.array([ [img.shape[1] / 2 - (img.shape[1] / 10)*1.2, height - 1], 
-#                                        [img.shape[1] / 2, img.shape[0] - (img.shape[0] / 5)*2.2], 
-#                                        [img.shape[1] / 2 + (img.shape[1] / 10)*2.3, height - 1] ], dtype=np.int32)
-    
-#     cv2.fillPoly(mask2, [region_to_be_eleminated], 0)
-    
-#     color_combined = cv2.bitwise_and(color_combined, mask2)
-    
-    #binary_output[(s_channel >= thresh[0]) & (s_channel <= thresh[1])] = 1
+
     # apply the region of interest mask
     mask = np.zeros_like(color_combined)
     region_of_interest_vertices = np.array([ [170,height-1], [width/2, int(5.7/10*height)], [1200*(img.shape[1]/1280)-1, height-1]], dtype=np.int32)
@@ -154,27 +135,12 @@ def get_warp_points(image):
     scale_factor_column = image.shape[1] / 1280
     scale_factor_row = image.shape[0] / 720
     middle_point = image.shape[1] / 2
-    # corners = np.float32([[middle_point - (scale_factor_column*387), image.shape[0] - (scale_factor_row*23)], 
-    #                       [middle_point - (scale_factor_column*55), image.shape[0] - (scale_factor_row*264)], 
-    #                       [middle_point + (scale_factor_column*60), image.shape[0] - (scale_factor_row*264)], 
-    #                       [middle_point + (scale_factor_column*421), image.shape[0] - (scale_factor_row*30)]])
-    
-    # corners = np.float32([[middle_point - (scale_factor_column*430), image.shape[0] - (scale_factor_row*10)], 
-    #                       [middle_point - (scale_factor_column*100), image.shape[0] - (scale_factor_row*280)], 
-    #                       [middle_point + (scale_factor_column*180), image.shape[0] - (scale_factor_row*280)], 
-    #                       [middle_point + (scale_factor_column*530), image.shape[0] - (scale_factor_row*10)]])
-    
-    # corners = np.float32([[middle_point - (387), image.shape[0] - (23)], 
-    #                       [middle_point - (55), image.shape[0] - (264)], 
-    #                       [middle_point + (60), image.shape[0] - (264)], 
-    #                       [middle_point + (421), image.shape[0] - (30)]])
-    
+
     corners = np.float32([[middle_point - (scale_factor_column*387), image.shape[0] - (scale_factor_row*23)], 
                           [middle_point - (scale_factor_column*115), image.shape[0] - (scale_factor_row*230)], 
                           [middle_point + (scale_factor_column*130), image.shape[0] - (scale_factor_row*230)], 
                           [middle_point + (scale_factor_column*421), image.shape[0] - (scale_factor_row*30)]])
-    
-    # print(image.shape[1] - 387)
+
     # Save top left and right explicitly and offset
     top_left = np.array([corners[0, 0], 0])
     top_right = np.array([corners[3, 0], 0])
@@ -186,9 +152,6 @@ def get_warp_points(image):
     # Save source points and destination points into arrays
     src_points = np.float32([corners[0], corners[1], corners[2], corners[3]])
     dst_points = np.float32([corners[0] + offset, top_left + offset, top_right - offset, corners[3] - offset])
-
-    # print(src_points)
-    # print(dst_points)
     
     return src_points, dst_points
 
@@ -206,9 +169,6 @@ def warp_image_to_birdseye_view(img, src, dst, image_size):
         warped: The image after applying warp perspective on it.
         Minv: Inverse of warped image.    
     '''
-    
-#     img = thresholding(image)
-    # img = hello(image)
     
     # Get perspective transform
     perspectiveTransform = cv2.getPerspectiveTransform(src, dst)
@@ -278,8 +238,6 @@ def fitlines(warped, nwindows=15, margin=100, minpix = 50 ):
     histogram = np.sum(warped, axis=0)
     # Create an output image to draw on and  visualize the result
     out_img = np.dstack((warped, warped, warped))*255
-    
-    # plt.imshow(warped, cmap='gray')
 
     # Find the peak of the left and right halves of the histogram
     # These will be the starting point for the left and right lines
@@ -288,7 +246,6 @@ def fitlines(warped, nwindows=15, margin=100, minpix = 50 ):
     rightx_base = np.argmax(histogram[midpoint:]) + midpoint
 
     # Choose the number of sliding windows
-    #nwindows = 9
     # Set height of windows
     window_height = np.int(warped.shape[0]/nwindows)
     # Identify the x and y positions of all nonzero pixels in the image
@@ -299,9 +256,7 @@ def fitlines(warped, nwindows=15, margin=100, minpix = 50 ):
     leftx_current = leftx_base
     rightx_current = rightx_base
     # Set the width of the windows +/- margin
-    #margin = 100
     # Set minimum number of pixels found to recenter window
-    #minpix = 50
     # Create empty lists to receive left and right lane pixel indices
     left_lane_inds = []
     right_lane_inds = []
@@ -404,7 +359,6 @@ def lane_curvatures(img, lefty, leftx, righty, rightx, ploty):
         right_fit_cr = np.polyfit(righty*ym_per_pix, rightx*xm_per_pix, 2)
         right_curverad = ((1 + (2*right_fit_cr[0]*y_eval*ym_per_pix + right_fit_cr[1])**2)**1.5) / np.absolute(2*right_fit_cr[0])
    
-     
         # estimating the vehicle position away from the center of the lane.
         car_pos = img.shape[1]/2
         l_fit_x_int = left_fit_cr[0]*img.shape[0]**2 + left_fit_cr[1]*img.shape[0] + left_fit_cr[2]
@@ -491,10 +445,6 @@ def draw_lane(img, warped, left_fit, right_fit, ploty, center, left_curverad, ri
     else:
         newwarp = old_lane.copy()    
         src,dst = get_warp_points(newwarp)
-         # Get perspective transform
-         #perspectiveTransform = cv2.getPerspectiveTransform(src, dst)
-         # Warp perspective
-         #color_warp = cv2.warpPerspective(newwarp, perspectiveTransform, (newwarp.shape[1], newwarp.shape[0]), flags=cv2.INTER_LINEAR)
         color_warp, _ = warp_image_to_birdseye_view(newwarp, src, dst, (newwarp.shape[1], newwarp.shape[0]))
         
   
@@ -512,17 +462,11 @@ def software_pipeline_v1(img):
         img: Input image of the road.
         
     Returns:
-       
         processed_img: The output image of road wih detected lanes on it.
        
     '''
    
     thresholded, binary_warped, M_inv = warp_image_to_birdseye_view_gray(img)
-    
-    # plt.imshow(img)
-    
-    # Binary Undistorced Warped Image
-    # thresholded,binary_warped, M_inv = binary(img)
     
     # Fit the lines
     left_fit, right_fit,out_img, lefty, leftx, righty, rightx, ploty = fitlines(binary_warped,15)    
@@ -545,16 +489,13 @@ def software_pipeline_v2(img):
     Parameters:
         img: Input image of the road.
         
-    Returns:
-       
+    Returns: 
         processed_img: The output image of road wih detected lanes on it concatenated with thresholded, warped to birdseye, 
         sliding windows and lane lines images.
        
     '''
     
     thresholded, binary_warped, M_inv = warp_image_to_birdseye_view_gray(img)
-    
-    # Binary Undistorced Warped Image
     
     # Fit the lines
     left_fit, right_fit,out_img, lefty, leftx, righty, rightx, ploty = fitlines(binary_warped,15)    
