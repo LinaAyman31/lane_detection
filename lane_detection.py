@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+import sys
 import matplotlib.pyplot as plt
 from moviepy.editor import VideoFileClip
 from IPython.display import HTML
@@ -580,7 +581,7 @@ def software_pipeline_v2(img):
 
     return processed_img
 
-def createVideo(input_clip, output_clip = './output_videos/output.mp4', debug = False):
+def createVideo(input_clip, output_clip, debug):
     '''
     Function that create video either in normal or debug mode.
     
@@ -593,7 +594,7 @@ def createVideo(input_clip, output_clip = './output_videos/output.mp4', debug = 
         output_clip: The output video.
     '''
        
-    if(debug == False):
+    if(debug == "0"):
         #Create video file pipeline
         clip1 = VideoFileClip(input_clip)
         out_clip = clip1.fl_image(software_pipeline_v1) #NOTE: this function expects color images!!
@@ -605,4 +606,7 @@ def createVideo(input_clip, output_clip = './output_videos/output.mp4', debug = 
         out_clip = clip1.fl_image(software_pipeline_v2) #NOTE: this function expects color images!!
         out_clip.write_videofile(output_clip, audio=False)
         
-    return output_clip   
+    return output_clip  
+
+
+createVideo(sys.argv[1], sys.argv[2], sys.argv[3]) 
