@@ -3,7 +3,6 @@ import cv2
 import sys
 import matplotlib.pyplot as plt
 from moviepy.editor import VideoFileClip
-from IPython.display import HTML
 
 
 def plt_images(orig_image, orig_title, processed_image, processed_title, cmap='gray'):
@@ -581,7 +580,7 @@ def software_pipeline_v2(img):
 
     return processed_img
 
-def createVideo(input_clip, output_clip, debug):
+def createVideo(input_clip, output_clip="./output.mp4", debug="0"):
     '''
     Function that create video either in normal or debug mode.
     
@@ -608,5 +607,8 @@ def createVideo(input_clip, output_clip, debug):
         
     return output_clip  
 
+def main():
+    createVideo(sys.argv[1], sys.argv[2], sys.argv[3]) 
 
-createVideo(sys.argv[1], sys.argv[2], sys.argv[3]) 
+if __name__ == "__main__":
+    main()
