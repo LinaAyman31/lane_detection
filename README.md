@@ -8,6 +8,14 @@ pip install opencv-python
 pip install opencv-contrib-python
 pip install moviepy
 ```
+# How To Run The Project
+- Navigate to the project directory.
+- Open terminal.
+- Run batch script using the following command:
+```cmd
+batchScript.bat <input_video_dir> <output_video_dir> --debug <0/1>
+```
+**_NOTE:_** 0 for normal mode while 1 for debugging mode.
 # Steps of The Project
 - Use sobel edge detector to detect lane edges.
 - Apply a perspective transform ("birds-eye view").
