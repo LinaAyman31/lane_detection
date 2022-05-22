@@ -29,3 +29,31 @@ def netForwardOutput(img ,net ,layers_names):
 
     layers_output = net.forward(layers_names)
     return layers_output
+
+def getBoxes(layers_output):
+    boxes = []
+    confidences = []
+    classIDs = []
+    for output in layers_output:
+        for detection in output:
+            scores = detection[5:]
+            classID = np.argmax(scores)
+            confidence = scores[classID]
+            
+            if (confidence > 0.85):
+                
+                box = detection[:4] * np.array([W, H, W, H])
+                
+                bx, by, bw, bh = box.astype("int")
+                
+                x = int(bx - (bw / 2))
+                y = int(by - (bh / 2))
+                
+                boxes.append([x, y, int(bw), int(bh)])
+                confidences.append(float(confidence))
+                classIDs.append(classID)
+
+    idxs = cv2.dnn.NMSBoxes(boxes, confidences, 0.8, 0.8)            
+    return idxs
+
+  
