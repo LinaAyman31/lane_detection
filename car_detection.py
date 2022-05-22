@@ -30,10 +30,11 @@ def netForwardOutput(img ,net ,layers_names):
     layers_output = net.forward(layers_names)
     return layers_output
 
-def getBoxes(layers_output):
+def getBoxes(layers_output, img):
     boxes = []
     confidences = []
     classIDs = []
+    (H, W) = img.shape[:2]
     for output in layers_output:
         for detection in output:
             scores = detection[5:]
@@ -53,7 +54,27 @@ def getBoxes(layers_output):
                 confidences.append(float(confidence))
                 classIDs.append(classID)
 
-    idxs = cv2.dnn.NMSBoxes(boxes, confidences, 0.8, 0.8)            
-    return idxs
+    if len(boxes) != 0:
+        idxs = cv2.dnn.NMSBoxes(boxes, confidences, 0.8, 0.5)           
+    return idxs, boxes, confidences
 
-  
+def drawBoxes(idxs, boxes, confidences, img):
+    if len(boxes) != 0:
+        for i in idxs.flatten():
+            (x, y) = [boxes[i][0], boxes[i][1]]
+            (w, h) = [boxes[i][2], boxes[i][3]]
+            
+            cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 3)
+            cv2.putText(img, "Car: {}".format(confidences[i]), (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+
+    return img 
+
+net = getNet()
+layers_names = loadWeightsLayers(net)
+
+def pipeline(img):
+    layers_output = netForwardOutput(img ,net ,layers_names)
+    idxs, boxes, confidences = getBoxes(layers_output, img)
+    img = drawBoxes(idxs, boxes, confidences, img)
+
+    return img
