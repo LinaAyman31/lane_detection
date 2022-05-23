@@ -480,7 +480,7 @@ def laneDetection_pipeline_v1(img):
 
 def laneDetection_pipeline_v2(img):
     '''
-    Function that detect and draw the lanes on image and calculate vechile posiion , left curvaure and right curvature
+    Function that detect and draw the lanes on image and calculate vechile position , left curvaure and right curvature
     and concatenated all stages to the img.
     
     Parameters:
