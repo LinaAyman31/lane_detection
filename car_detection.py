@@ -4,14 +4,6 @@ import cv2
 import matplotlib.pyplot as plt
 from moviepy.editor import VideoFileClip
 
-
-def loadWeightsLayers(net):
-    names = net.getLayerNames()
-
-    layers_names = [names[i - 1] for i in net.getUnconnectedOutLayers()]
-
-    return layers_names
-
 def getNet():
     weights_path = "yolov3.weights"
     cfg_path = "yolov3.cfg"
@@ -20,6 +12,13 @@ def getNet():
     # net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
     # net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
     return net
+
+def loadWeightsLayers(net):
+    names = net.getLayerNames()
+
+    layers_names = [names[i - 1] for i in net.getUnconnectedOutLayers()]
+
+    return layers_names
 
 
 def netForwardOutput(img ,net ,layers_names):
