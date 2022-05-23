@@ -19,7 +19,7 @@ def pipeline_v4(img):
     img = laneDetection_pipeline_v2(img)
     return carDetection_pipeline_v2(img)
 
-def createVideo(input_clip, output_clip="./output.mp4", debug="0", draw_cars="0"):
+def createVideo(input_clip, output_clip="./output.mp4", mode="0"):
     '''
     Function that create video either in normal or debug mode.
     
@@ -32,22 +32,22 @@ def createVideo(input_clip, output_clip="./output.mp4", debug="0", draw_cars="0"
         output_clip: The output video.
     '''
        
-    if(debug == "0" and draw_cars == "0"):
+    if(mode == "0"):
         #Create video file pipeline
         clip1 = VideoFileClip(input_clip)
         out_clip = clip1.fl_image(pipeline_v1) #NOTE: this function expects color images!!
         out_clip.write_videofile(output_clip, audio=False)
 
-    elif(debug == "0" and draw_cars == "1"):
-        #Create video file pipeline
-        clip1 = VideoFileClip(input_clip)
-        out_clip = clip1.fl_image(pipeline_v2) #NOTE: this function expects color images!!
-        out_clip.write_videofile(output_clip, audio=False)
-
-    elif(debug == "1" and draw_cars == "0"):
+    elif(mode == "1"):
         #Create video file pipeline
         clip1 = VideoFileClip(input_clip)
         out_clip = clip1.fl_image(pipeline_v3) #NOTE: this function expects color images!!
+        out_clip.write_videofile(output_clip, audio=False)
+
+    elif(mode == "2"):
+        #Create video file pipeline
+        clip1 = VideoFileClip(input_clip)
+        out_clip = clip1.fl_image(pipeline_v2) #NOTE: this function expects color images!!
         out_clip.write_videofile(output_clip, audio=False)
 
     else:
