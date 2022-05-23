@@ -38,7 +38,7 @@ def getBoxes(layers_output, img):
             classID = np.argmax(scores)
             confidence = scores[classID]
             
-            if (confidence > 0.80):
+            if (confidence > 0.75):
                 
                 box = detection[:4] * np.array([W, H, W, H])
                 
@@ -52,7 +52,7 @@ def getBoxes(layers_output, img):
                 classIDs.append(classID)
 
     if len(boxes) != 0:
-        idxs = cv2.dnn.NMSBoxes(boxes, confidences, 0.8, 0.5)           
+        idxs = cv2.dnn.NMSBoxes(boxes, confidences, 0.75, 0.5)           
     return idxs, boxes, confidences
 
 
