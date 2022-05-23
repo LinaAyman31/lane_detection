@@ -431,14 +431,14 @@ def draw_lane(img, warped, left_fit, right_fit, ploty, center, left_curverad, ri
         else:
             TextC = "Vehicle is exactly on center"
             
-        fontScale=1.5
-        thickness=3
+        fontScale=1
+        thickness=2
         fontFace = cv2.FONT_HERSHEY_SIMPLEX
          
         # Combine the result with the original image
-        cv2.putText(newwarp, TextL, (100,60), fontFace, fontScale,(255,255,255), thickness,  lineType = cv2.LINE_AA)
-        cv2.putText(newwarp, TextR, (100,110), fontFace, fontScale,(255,255,255), thickness,  lineType = cv2.LINE_AA)
-        cv2.putText(newwarp, TextC, (100,170), fontFace, fontScale,(255,255,255), thickness,  lineType = cv2.LINE_AA)
+        cv2.putText(newwarp, TextL, (newwarp.shape[1]//2,60), fontFace, fontScale,(255,255,255), thickness,  lineType = cv2.LINE_AA)
+        cv2.putText(newwarp, TextR, (newwarp.shape[1]//2,110), fontFace, fontScale,(255,255,255), thickness,  lineType = cv2.LINE_AA)
+        cv2.putText(newwarp, TextC, (newwarp.shape[1]//2,170), fontFace, fontScale,(255,255,255), thickness,  lineType = cv2.LINE_AA)
         old_lane = newwarp.copy()
      
         

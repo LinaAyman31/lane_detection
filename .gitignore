@@ -3,3 +3,10 @@
 project_video_output.mp4
 yolov3.cfg
 yolov3.weights
+challenge_video_output_debug_mode.mp4
+challenge_video_output.mp4
+challenge_video_output.mp4
+project_video_output_80.mp4
+challenge_video_output.mp4
+*.pyc
+*.pyc
