@@ -67,22 +67,18 @@ if "%4" == "" (
 
 if "%3" == "--debug" (
     if "%4" == "0" (
-        conda activate base
         python main.py %1 %2 %4
         pause
     )
     if "%4" == "1" (
-        conda activate base
         python main.py %1 %2 %4
         pause
     )
     if "%4" == "2" (
-        conda activate base
         python main.py %1 %2 %4
         pause
     )
     if "%4" == "3" (
-        conda activate base
         python main.py %1 %2 %4
         pause
     ) else (
