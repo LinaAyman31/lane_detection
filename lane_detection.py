@@ -3,7 +3,7 @@ import cv2
 import sys
 import matplotlib.pyplot as plt
 from moviepy.editor import VideoFileClip
-
+from car_detection import * 
 
 def plt_images(orig_image, orig_title, processed_image, processed_title, cmap='gray'):
     # Visualize undirstorsion
@@ -454,7 +454,7 @@ def draw_lane(img, warped, left_fit, right_fit, ploty, center, left_curverad, ri
     result = cv2.addWeighted(img, 1, newwarp, 0.3, 0)
     return result,color_warp
 
-def software_pipeline_v1(img):
+def laneDetection_pipeline_v1(img):
     '''
     Function that detect and draw the lanes on image and calculate vechile posiion , left curvaure and right curvature.
     
@@ -481,7 +481,7 @@ def software_pipeline_v1(img):
     return processed_img
 
 
-def software_pipeline_v2(img):
+def laneDetection_pipeline_v2(img):
     '''
     Function that detect and draw the lanes on image and calculate vechile posiion , left curvaure and right curvature
     and concatenated all stages to the img.
@@ -521,6 +521,15 @@ def software_pipeline_v2(img):
 
     return processed_img
 
+
+def pipeline_v1(img):
+    img = laneDetection_pipeline_v1(img)
+    return carDetection_pipeline(img)
+def pipeline_v2(img):
+    img = laneDetection_pipeline_v2(img)
+    return carDetection_pipeline(img)
+
+
 def createVideo(input_clip, output_clip="./output.mp4", debug="0"):
     '''
     Function that create video either in normal or debug mode.
@@ -537,13 +546,13 @@ def createVideo(input_clip, output_clip="./output.mp4", debug="0"):
     if(debug == "0"):
         #Create video file pipeline
         clip1 = VideoFileClip(input_clip)
-        out_clip = clip1.fl_image(software_pipeline_v1) #NOTE: this function expects color images!!
+        out_clip = clip1.fl_image(pipeline_v1) #NOTE: this function expects color images!!
         out_clip.write_videofile(output_clip, audio=False)
 
     else:
         #Create video file pipeline
         clip1 = VideoFileClip(input_clip)
-        out_clip = clip1.fl_image(software_pipeline_v2) #NOTE: this function expects color images!!
+        out_clip = clip1.fl_image(pipeline_v2) #NOTE: this function expects color images!!
         out_clip.write_videofile(output_clip, audio=False)
         
     return output_clip  
