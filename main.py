@@ -5,17 +5,61 @@ import sys
 
 
 def pipeline_v1(img):
+    '''
+    Function that detect and draw the lanes on image and boxes on detected cars and calculate vechile posiion , left curvaure and right curvature.
+    
+    Parameters:
+        img: Input image of the road.
+        
+    Returns:
+        processed_img: The output image of road wih detected lanes on it and detected cars.
+       
+    '''
     img = laneDetection_pipeline_v1(img)
     return carDetection_pipeline_v1(img)
 def pipeline_v2(img):
+    '''
+    Function that detect and draw the lanes on image and boxes on detected cars and drawn cars on the left and calculate vechile posiion , left curvaure and right curvature.
+    
+    Parameters:
+        img: Input image of the road.
+        
+    Returns:
+        processed_img: The output image of road wih detected lanes on it and detected cars and drawn cars on the left.
+       
+    '''
     img = laneDetection_pipeline_v1(img)
     return carDetection_pipeline_v2(img)
 
 def pipeline_v3(img):
+    '''
+    Function that detect and draw the lanes on image and calculate vechile position , left curvaure and right curvature
+    and concatenated all stages to the img and draw boxes on detected cars.
+    
+    Parameters:
+        img: Input image of the road.
+        
+    Returns: 
+        processed_img: The output image of road wih detected lanes on it and boxes on detected cars concatenated with thresholded, warped to birdseye, 
+        sliding windows and lane lines images.
+       
+    '''
     img = laneDetection_pipeline_v2(img)
     return carDetection_pipeline_v1(img)
 
 def pipeline_v4(img):
+    '''
+    Function that detect and draw the lanes on image and calculate vechile position , left curvaure and right curvature
+    and concatenated all stages to the img and draw boxes on detected cars and drawn cars on the left.
+    
+    Parameters:
+        img: Input image of the road.
+        
+    Returns: 
+        processed_img: The output image of road wih detected lanes on it and boxes on detected cars and drawn cars on left concatenated with thresholded, warped to birdseye, 
+        sliding windows and lane lines images.
+       
+    '''
     img = laneDetection_pipeline_v2(img)
     return carDetection_pipeline_v2(img)
 
