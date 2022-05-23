@@ -1,9 +1,6 @@
 import numpy as np
 import cv2
-import sys
 import matplotlib.pyplot as plt
-from moviepy.editor import VideoFileClip
-from car_detection import * 
 
 def plt_images(orig_image, orig_title, processed_image, processed_title, cmap='gray'):
     # Visualize undirstorsion
@@ -520,45 +517,3 @@ def laneDetection_pipeline_v2(img):
     
 
     return processed_img
-
-
-def pipeline_v1(img):
-    img = laneDetection_pipeline_v1(img)
-    return carDetection_pipeline(img)
-def pipeline_v2(img):
-    img = laneDetection_pipeline_v2(img)
-    return carDetection_pipeline(img)
-
-
-def createVideo(input_clip, output_clip="./output.mp4", debug="0"):
-    '''
-    Function that create video either in normal or debug mode.
-    
-    Parameters:
-        input_clip: Input video directory.
-        output_clip: Output video directory.
-        debug: flag of debug mode.
-        
-    Returns:
-        output_clip: The output video.
-    '''
-       
-    if(debug == "0"):
-        #Create video file pipeline
-        clip1 = VideoFileClip(input_clip)
-        out_clip = clip1.fl_image(pipeline_v1) #NOTE: this function expects color images!!
-        out_clip.write_videofile(output_clip, audio=False)
-
-    else:
-        #Create video file pipeline
-        clip1 = VideoFileClip(input_clip)
-        out_clip = clip1.fl_image(pipeline_v2) #NOTE: this function expects color images!!
-        out_clip.write_videofile(output_clip, audio=False)
-        
-    return output_clip  
-
-def main():
-    createVideo(sys.argv[1], sys.argv[2], sys.argv[3]) 
-
-if __name__ == "__main__":
-    main()

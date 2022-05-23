@@ -1,8 +1,5 @@
 import numpy as np
-import time
 import cv2
-import matplotlib.pyplot as plt
-from moviepy.editor import VideoFileClip
 
 def getNet():
     weights_path = "yolov3.weights"
@@ -101,7 +98,13 @@ def draw_cars(idxs,boxes,img):
 net = getNet()
 layers_names = loadWeightsLayers(net)
 
-def carDetection_pipeline(img):
+def carDetection_pipeline_v1(img):
+    layers_output = netForwardOutput(img ,net ,layers_names)
+    idxs, boxes, confidences = getBoxes(layers_output, img) 
+    img = drawBoxes(idxs, boxes, confidences, img)
+    return img
+
+def carDetection_pipeline_v2(img):
     layers_output = netForwardOutput(img ,net ,layers_names)
     idxs, boxes, confidences = getBoxes(layers_output, img)
     img = draw_cars(idxs,boxes,img)   
