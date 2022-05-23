@@ -23,7 +23,7 @@ def getNet():
 
 
 def netForwardOutput(img ,net ,layers_names):
-    blob = cv2.dnn.blobFromImage(img, 1 / 255.0, (416, 416), crop=False, swapRB=False)
+    blob = cv2.dnn.blobFromImage(img, 1 / 255.0, (320, 320), crop=False, swapRB=False)
 
     net.setInput(blob)
 
@@ -42,7 +42,7 @@ def getBoxes(layers_output, img):
             classID = np.argmax(scores)
             confidence = scores[classID]
             
-            if (confidence > 0.85):
+            if (confidence > 0.80):
                 
                 box = detection[:4] * np.array([W, H, W, H])
                 
