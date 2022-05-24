@@ -18,7 +18,7 @@ pip install moviepy
 ### Windows
 ```cmd
 conda activate base
-batchScript.bat <input_video_dir> <output_video_dir> --debug <0/1/2/3>
+batchScript.bat <input_video_dir> <output_video_dir> --mode <0/1/2/3>
 ```
 **_NOTE:_** 0 for normal mode, 1 for debugging mode, 2 for draw car mode, and 3 for debugging with draw car mode.
 
