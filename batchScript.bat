@@ -59,13 +59,13 @@ if "%2" == "" (
     echo "Error! Output video path missing."
 )
 if "%3" == "" (
-    echo "Error! --debug keyword missing."
+    echo "Error! --mode keyword missing."
 )
 if "%4" == "" (
-    echo "Error! Debugging value missing." 
+    echo "Error! mode value missing." 
 )
 
-if "%3" == "--debug" (
+if "%3" == "--mode" (
     if "%4" == "0" (
         python main.py %1 %2 %4
         pause
@@ -82,10 +82,10 @@ if "%3" == "--debug" (
         python main.py %1 %2 %4
         pause
     ) else (
-        echo "Error! Debugging value must be 0, 1, 2, or 3."
+        echo "Error! mode value must be 0, 1, 2, or 3."
     )
     
 ) else (
-    echo "Error! --debug keyword missing."
+    echo "Error! --mode keyword missing."
 )
 pause
